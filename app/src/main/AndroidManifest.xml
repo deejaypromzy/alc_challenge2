@@ -26,7 +26,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddTravelDeals" />
+        <activity android:name=".AddTravelDeals">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dj.travelmantics.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
