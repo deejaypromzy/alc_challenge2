@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean admin;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FloatingActionButton fab;
-    private String role;
+    private String role = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,12 +78,16 @@ public class MainActivity extends AppCompatActivity {
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
                     hideFloatingActionButton(fab);
                 } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
-                    showFloatingActionButton(fab);
+                    if (role.equals("1")) {
+                        showFloatingActionButton(fab);
+                    }
+                    // showFloatingActionButton(fab);
+
                 }
             }
         });
