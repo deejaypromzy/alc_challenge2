@@ -55,6 +55,13 @@ public class Login extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ImageView imageView = findViewById(R.id.ImageView);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        // [END config_signin]
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         GlideApp.with(this)
                 .load(R.drawable.logo_one)
@@ -73,12 +80,6 @@ public class Login extends AppCompatActivity{
         hideSoftKeyboard();
         // [START config_signin]
         // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        // [END config_signin]
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         // [START initialize_auth]
         // Initialize Firebase Auth
@@ -224,9 +225,6 @@ public class Login extends AppCompatActivity{
         super.onStart();
         FirebaseAuth.getInstance().addAuthStateListener(mAuthListener);
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if(account!=null)
-        firebaseAuthWithGoogle(account);
     }
     @Override
     public void onStop() {
@@ -299,34 +297,23 @@ if (emailChk())
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
-        }
-    }
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
-            // Signed in successfully, show authenticated UI.
-            firebaseAuthWithGoogle(account);
-        } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-            updateUI(null);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account);
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                Log.w(TAG, "Google sign in failed", e);
+                // ...
+            }
         }
     }
 
-    // [START auth_with_google]
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-        // [START_EXCLUDE silent]
-        showProgressDialog();
-        // [END_EXCLUDE]
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -345,13 +332,10 @@ if (emailChk())
                             updateUI(null);
                         }
 
-                        // [START_EXCLUDE]
-                        hideProgressDialog();
-                        // [END_EXCLUDE]
+                        // ...
                     }
                 });
     }
-    // [END auth_with_google]
 // [END auth_with_google]
     private void updateUI(FirebaseUser user) {
         if (user != null) {
