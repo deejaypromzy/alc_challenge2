@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -45,88 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private String role = "";
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        setupFirebaseAuth();
-
-
-
-        mProgress=findViewById(R.id.progressBar);
-
-        final RecyclerView mRecyclerView = findViewById(R.id.recyclerView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //Initialize the ArrayList that will contain the data
-        DealsData = new ArrayList<>();
-        dealsAdapter = new TravelDeals(this, DealsData);
-        mRecyclerView.setAdapter(dealsAdapter);
-
-
-        fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            startActivity(new Intent(MainActivity.this,AddTravelDeals.class));
-            }
-        });
-
-        hideFloatingActionButton(fab);
-
-
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
-                    hideFloatingActionButton(fab);
-                } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
-                    if (role.equals("1")) {
-                        showFloatingActionButton(fab);
-                    }
-                    // showFloatingActionButton(fab);
-
-                }
-            }
-        });
-
-
-        new CountDownTimer(2000,1000)
-        {
-            public void onTick(long ms)
-            {
-
-                mProgress.setVisibility(VISIBLE);
-            }
-            public void onFinish(){
-
-
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                isAdmin(user);
-                Query dealsQuery =   mref.child(FilePaths.travel_deals).child("deals").orderByKey();
-
-                dealsQuery.addValueEventListener(new ValueEventListener() {
-
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        showData(dataSnapshot);
-                        mProgress.setVisibility(GONE);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-//c.close();
-            }
-        }.start();
-
-
-    }
+    long lastPress;
 
 
     void isAdmin(FirebaseUser user) {
@@ -312,4 +232,105 @@ public class MainActivity extends AppCompatActivity {
             behavior.setAutoHideEnabled(true);
         }
     }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        setupFirebaseAuth();
+
+
+        mProgress = findViewById(R.id.progressBar);
+
+        final RecyclerView mRecyclerView = findViewById(R.id.recyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //Initialize the ArrayList that will contain the data
+        DealsData = new ArrayList<>();
+        dealsAdapter = new TravelDeals(this, DealsData);
+        mRecyclerView.setAdapter(dealsAdapter);
+
+
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, AddTravelDeals.class));
+            }
+        });
+
+        hideFloatingActionButton(fab);
+
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+                    hideFloatingActionButton(fab);
+                } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+                    if (role.equals("1")) {
+                        showFloatingActionButton(fab);
+                    }
+                    // showFloatingActionButton(fab);
+
+                }
+            }
+        });
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if ((user != null ? user.getDisplayName() : null) != null) {
+            Toast.makeText(this, "welcome " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
+
+        }
+
+
+        new CountDownTimer(2000, 1000) {
+            public void onTick(long ms) {
+
+                mProgress.setVisibility(VISIBLE);
+            }
+
+            public void onFinish() {
+
+
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                isAdmin(user);
+                Query dealsQuery = mref.child(FilePaths.travel_deals).child("deals").orderByKey();
+
+                dealsQuery.addValueEventListener(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        showData(dataSnapshot);
+                        mProgress.setVisibility(GONE);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+//c.close();
+            }
+        }.start();
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastPress > 5000) {
+            Toast.makeText(this, "Press back again to exit !", Toast.LENGTH_SHORT).show();
+            lastPress = currentTime;
+        } else {
+            super.onBackPressed();
+        }
+
+    }
+
 }
