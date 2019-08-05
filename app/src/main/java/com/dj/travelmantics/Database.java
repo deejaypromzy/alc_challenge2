@@ -78,6 +78,10 @@ class Database {
         this.photo_url = photo_url;
     }
 
+    public Database(String _id) {
+        this._id = _id;
+    }
+
     public Database(String name, String _id, String role) {
         this.name = name;
         this._id = _id;

@@ -196,7 +196,7 @@ public class Signup extends AppCompatActivity {
             password.setError("Password can't be empty..");
             password.requestFocus();
             return false;
-        } else if(mypassword.length()<6) {
+        } else if (mypassword.length() < 4) {
             password.setError("Password must be more than 4 characters");
             password.requestFocus();
             return false;

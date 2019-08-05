@@ -1,6 +1,5 @@
 package com.dj.travelmantics;
 
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,11 +40,11 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase mfirebaseDatabase;
     private DatabaseReference mref;
     private ProgressBar mProgress;
-
+    private boolean admin;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FloatingActionButton fab;
+    private String role;
 
-    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,8 +74,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
         new CountDownTimer(2000,1000)
         {
             public void onTick(long ms)
@@ -84,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
                 mProgress.setVisibility(VISIBLE);
             }
             public void onFinish(){
+
+
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                isAdmin(user);
                 Query dealsQuery =   mref.child(FilePaths.travel_deals).child("deals").orderByKey();
 
                 dealsQuery.addValueEventListener(new ValueEventListener() {
@@ -108,16 +110,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    void isAdmin(FirebaseUser user) {
+        Query userQuery = mref.child(FilePaths.travel_deals).child("users").child(user.getUid());
 
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //this loop will return a single result
 
-    @SuppressLint("RestrictedApi")
+                Database userDetails = dataSnapshot.getValue(Database.class);
+                if ((userDetails != null ? userDetails.getRole() : null) != null) {
+
+                    role = userDetails.getRole();
+                    Toast.makeText(MainActivity.this, role, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void showData(DataSnapshot dataSnapshot) {
         //Create the ArrayList of Sports objects with the titles, images
         // and information about each sport
         DealsData.clear();
         for (DataSnapshot ds : dataSnapshot.getChildren()){
-
             Database userDatabase = ds.getValue(Database.class);
 
 
@@ -235,6 +256,7 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         FirebaseAuth.getInstance().addAuthStateListener(mAuthListener);
+
     }
 
     @Override
