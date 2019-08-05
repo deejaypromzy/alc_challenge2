@@ -10,10 +10,8 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="12dp"
         app:cardCornerRadius="10dp"
-        app:cardElevation="14dp"
+        app:cardElevation="8dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -32,7 +30,7 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:orientation="vertical"
-                android:padding="@dimen/fab_margin"
+                android:padding="8dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <RelativeLayout
@@ -52,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/fab_margin"
+                    android:layout_margin="8dp"
                     android:background="@drawable/btn_login_bg"
                     android:drawableStart="@drawable/photo"
                     android:padding="@dimen/fab_margin"
@@ -123,7 +121,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/btn_login_bg"
                     android:drawableStart="@drawable/ic_outline_save_24pxb"
                     android:padding="@dimen/fab_margin"

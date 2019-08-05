@@ -74,6 +74,21 @@ public class MainActivity extends AppCompatActivity {
         });
 
         hideFloatingActionButton(fab);
+
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+                    hideFloatingActionButton(fab);
+                } else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+                    showFloatingActionButton(fab);
+                }
+            }
+        });
+
+
         new CountDownTimer(2000,1000)
         {
             public void onTick(long ms)
