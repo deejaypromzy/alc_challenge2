@@ -177,27 +177,29 @@ public class Signup extends AppCompatActivity {
     }
 
     private boolean validateForm() {
-     String mylname = name.getText().toString();
-        if (TextUtils.isEmpty(mylname)) {
-            name.setError("Name can't be empty.");
-            name.requestFocus();
-            return false;
-        } else {
-            name.setError(null);
-        } String myemail = etEmail.getText().toString();
+        String myemail = etEmail.getText().toString();
         if (TextUtils.isEmpty(myemail)) {
             etEmail.setError("Email can't be empty..");
             etEmail.requestFocus();
             return false;
         } else {
             etEmail.setError(null);
-        } String mypassword = password.getText().toString();
+        }
+        String mylname = name.getText().toString();
+        if (TextUtils.isEmpty(mylname)) {
+            name.setError("Name can't be empty.");
+            name.requestFocus();
+            return false;
+        } else {
+            name.setError(null);
+        }
+        String mypassword = password.getText().toString();
         if (TextUtils.isEmpty(mypassword)) {
             password.setError("Password can't be empty..");
             password.requestFocus();
             return false;
-        } else if (mypassword.length() < 4) {
-            password.setError("Password must be more than 4 characters");
+        } else if (mypassword.length() < 6) {
+            password.setError("Password must be more than 6 characters");
             password.requestFocus();
             return false;
         } else {
