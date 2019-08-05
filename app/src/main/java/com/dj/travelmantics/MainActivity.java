@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        hideFloatingActionButton(fab);
         new CountDownTimer(2000,1000)
         {
             public void onTick(long ms)
@@ -123,7 +123,9 @@ public class MainActivity extends AppCompatActivity {
                 if ((userDetails != null ? userDetails.getRole() : null) != null) {
 
                     role = userDetails.getRole();
-                    Toast.makeText(MainActivity.this, role, Toast.LENGTH_SHORT).show();
+                    if (role.equals("1")) {
+                        showFloatingActionButton(fab);
+                    }
                 }
             }
 
@@ -143,11 +145,11 @@ public class MainActivity extends AppCompatActivity {
 
 
             DealsData.add(new Database(
-                        userDatabase.getCity(),
-                        userDatabase.getAmount(),
-                        userDatabase.getPlace(),
-                        userDatabase.getDesc(),
-                        userDatabase.getPhoto_url()));
+                    userDatabase != null ? userDatabase.getCity() : null,
+                    userDatabase != null ? userDatabase.getAmount() : null,
+                    userDatabase != null ? userDatabase.getPlace() : null,
+                    userDatabase != null ? userDatabase.getDesc() : null,
+                    userDatabase != null ? userDatabase.getPhoto_url() : null));
 
 
         }
@@ -264,6 +266,31 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         if (mAuthListener != null) {
             FirebaseAuth.getInstance().removeAuthStateListener(mAuthListener);
+        }
+    }
+
+    private void hideFloatingActionButton(FloatingActionButton fab) {
+        CoordinatorLayout.LayoutParams params =
+                (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+        FloatingActionButton.Behavior behavior =
+                (FloatingActionButton.Behavior) params.getBehavior();
+
+        if (behavior != null) {
+            behavior.setAutoHideEnabled(false);
+        }
+
+        fab.hide();
+    }
+
+    private void showFloatingActionButton(FloatingActionButton fab) {
+        fab.show();
+        CoordinatorLayout.LayoutParams params =
+                (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+        FloatingActionButton.Behavior behavior =
+                (FloatingActionButton.Behavior) params.getBehavior();
+
+        if (behavior != null) {
+            behavior.setAutoHideEnabled(true);
         }
     }
 }
