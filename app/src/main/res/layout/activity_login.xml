@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".Login">
+
+<ScrollView
+    android:scrollbars="none"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<android.support.v7.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="30dp"
+    app:cardElevation="12dp"
+    app:cardPreventCornerOverlap="false"
+    app:cardUseCompatPadding="true"
+    android:layout_gravity="center_vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:gravity="center"
+android:padding="5dp"        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="38dp"
+            android:layout_height="48dp"
+            android:id="@+id/ImageView"
+            android:scaleType="fitXY"
+           />
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint=" Email"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:drawableStart="@drawable/ic_email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:autofillHints="email" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            app:passwordToggleContentDescription="description"
+            app:passwordToggleDrawable="@drawable/ic_visible"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="#a1000000"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/password"
+                android:padding="@dimen/activity_horizontal_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/pass"
+                android:hint="Password"
+                android:longClickable="false"
+                android:textIsSelectable="false"
+                android:inputType="textPassword" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            tools:visibility="gone" />
+
+        <Button
+            android:id="@+id/signinBtn"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_login_bg"
+            android:onClick="Signinmeton"
+            android:text="Log in"
+            android:textColor="@android:color/background_light"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="100dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="2dp"
+                android:background="@android:color/holo_blue_dark" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:textColor="@android:color/holo_red_light"
+                android:layout_height="wrap_content"
+                android:text=" OR "/>
+            <View
+                android:layout_width="100dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="2dp"
+                android:background="@android:color/holo_blue_dark" />
+        </LinearLayout>
+
+      <Button
+          android:onClick="googleSignIn"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_margin="@dimen/fab_margin"
+          android:background="@drawable/common_google_signin_btn_text_light_normal"
+          android:text="@string/common_signin_button_text_long"/>
+
+        <TextView
+            android:onClick="resetPass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20sp"
+            android:drawableStart="@drawable/pass"
+            android:text=" Forgot Password?"
+            android:textAlignment="center"
+            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20sp"
+                android:text="Don't have an account? "
+                android:textAlignment="center"
+                 />        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/holo_red_dark"
+                android:text="Sign Up"
+                android:textAlignment="center"
+                android:onClick="GoToSignup" />
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>
+
+</ScrollView>
+</android.support.constraint.ConstraintLayout>

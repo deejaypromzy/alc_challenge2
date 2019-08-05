@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Travel Mantics</string>
+    <string name="action_settings">Settings</string>
+    <string name="logout">Logout</string>
+</resources>

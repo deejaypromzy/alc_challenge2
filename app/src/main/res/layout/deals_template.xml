@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView android:id="@+id/card"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:duplicateParentState="true"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="4dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true"
+    android:visibility="visible"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="100"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_margin="5dp"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_weight="70"
+        android:gravity="center_vertical"
+        android:textAlignment="center"
+        android:textColor="@android:color/white" />
+
+            <LinearLayout
+                android:layout_weight="30"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+
+                    <TextView
+                        android:id="@+id/city"
+                        android:textSize="24sp"
+                        android:fontFamily="cursive"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="lass" />
+
+                    <TextView
+                        android:id="@+id/place"
+                        android:layout_width="match_parent"
+                        android:textSize="18sp"
+                        android:fontFamily="sans-serif-condensed"
+                        android:layout_height="wrap_content"
+                        android:text="Stock Qty" />
+
+
+                    <TextView
+                        android:id="@+id/desc"
+                        android:layout_width="match_parent"
+                        android:textSize="14sp"
+                        android:textStyle="italic|bold"
+                        android:layout_height="wrap_content"
+                        android:text="Stock Qty" />
+
+                <TextView
+                        android:id="@+id/amt"
+                        android:layout_width="match_parent"
+                        android:textSize="18sp"
+                    android:paddingBottom="@dimen/fab_margin"
+                    android:paddingEnd="@dimen/fab_margin"
+                    android:textAlignment="textEnd"
+                    android:textColor="@android:color/holo_red_light"
+                        android:layout_height="wrap_content"
+                        android:text="Stock Qty" />
+
+</LinearLayout> </LinearLayout>
+
+    </android.support.v7.widget.CardView>
