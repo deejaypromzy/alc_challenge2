@@ -9,4 +9,5 @@
     <string name="place">Place</string>
     <string name="description">Description</string>
     <string name="save">Save</string>
+    <string name="details"><![CDATA[<<< Details >>>]]></string>
 </resources>

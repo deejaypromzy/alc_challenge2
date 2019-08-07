@@ -42,6 +42,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dj.travelmantics.MainActivity" />
         </activity>
+        <activity android:name=".View_Travel_Deals" />
     </application>
 
 </manifest>

@@ -45,16 +45,14 @@
                         android:fontFamily="cursive"
                         android:textStyle="bold"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="lass" />
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         android:id="@+id/place"
                         android:layout_width="match_parent"
                         android:textSize="18sp"
                         android:fontFamily="sans-serif-condensed"
-                        android:layout_height="wrap_content"
-                        android:text="Stock Qty" />
+                        android:layout_height="wrap_content" />
 
 
                     <TextView
@@ -62,8 +60,7 @@
                         android:layout_width="match_parent"
                         android:textSize="14sp"
                         android:textStyle="italic|bold"
-                        android:layout_height="wrap_content"
-                        android:text="Stock Qty" />
+                        android:layout_height="wrap_content" />
 
                 <TextView
                         android:id="@+id/amt"
@@ -73,9 +70,19 @@
                     android:paddingEnd="@dimen/fab_margin"
                     android:textAlignment="textEnd"
                     android:textColor="@android:color/holo_red_light"
-                        android:layout_height="wrap_content"
-                        android:text="Stock Qty" />
+                        android:layout_height="wrap_content" />
 
-</LinearLayout> </LinearLayout>
+                <Button
+                    android:id="@+id/details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:background="@drawable/btn_update"
+                    android:padding="8dp"
+                    android:text="@string/details"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+
+</LinearLayout>
 
     </android.support.v7.widget.CardView>

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,8 +22,7 @@ import com.google.firebase.storage.StorageReference;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import static android.content.Context.MODE_PRIVATE;
+import java.util.Objects;
 
 class TravelDeals extends RecyclerView.Adapter<TravelDeals.DealsViewHolder>  {
 
@@ -82,6 +82,7 @@ class TravelDeals extends RecyclerView.Adapter<TravelDeals.DealsViewHolder>  {
       //  private RatingBar price;
         private TextView city,place,desc,amt;
         private ImageView img;
+        private Button details;
         private Context mContext;
         private Database mcurrentDeal;
         private DatabaseReference mref;
@@ -90,6 +91,7 @@ class TravelDeals extends RecyclerView.Adapter<TravelDeals.DealsViewHolder>  {
         private String URL;
         private String getrole;
         private SharedPreferences sharedpreferences;
+        private SharedPreferences pref;
 
         DealsViewHolder(final Context context, View itemView) {
             super(itemView);
@@ -97,6 +99,7 @@ class TravelDeals extends RecyclerView.Adapter<TravelDeals.DealsViewHolder>  {
             //Initialize the views
             city = itemView.findViewById(R.id.city);
             place = itemView.findViewById(R.id.place);
+            details = itemView.findViewById(R.id.details);
             amt = itemView.findViewById(R.id.amt);
             desc = itemView.findViewById(R.id.desc);
             img = itemView.findViewById(R.id.img);
@@ -105,34 +108,36 @@ class TravelDeals extends RecyclerView.Adapter<TravelDeals.DealsViewHolder>  {
             mfirebaseDatabase = FirebaseDatabase.getInstance();
             mref = mfirebaseDatabase.getReference();
             UserProductImageRef = FirebaseStorage.getInstance().getReference();
+            details.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pref = mContext.getSharedPreferences("MyPref", 0);
 
 
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                    Intent intent;
+                    if (Objects.equals(pref.getString("userType", "null"), "1")) {
+                        intent = new Intent(mContext, Edit_Travel_Deals.class);
+                    } else {
 
-                        SharedPreferences prefs = mContext.getSharedPreferences("myPrefs", MODE_PRIVATE);
-                        if (prefs.getString("role", "0").equals("1")) {
-                            Intent intent = new Intent(mContext, Edit_Travel_Deals.class);
-                            intent.putExtra("city", mcurrentDeal.getCity());
-                            intent.putExtra("amt", mcurrentDeal.getAmount());
-                            intent.putExtra("place", mcurrentDeal.getPlace());
-                            intent.putExtra("desc", mcurrentDeal.getDesc());
-                            intent.putExtra("photoUrl", mcurrentDeal.getPhoto_url());
+                        intent = new Intent(mContext, View_Travel_Deals.class);
 
-                            mContext.startActivity(intent);
-                        }
+
                     }
-                });
 
 
+                    intent.putExtra("city", mcurrentDeal.getCity());
+                    intent.putExtra("amt", mcurrentDeal.getAmount());
+                    intent.putExtra("place", mcurrentDeal.getPlace());
+                    intent.putExtra("desc", mcurrentDeal.getDesc());
+                    intent.putExtra("photoUrl", mcurrentDeal.getPhoto_url());
+                    mContext.startActivity(intent);
+                }
+            });
         }
 
 
 
             void bindTo(Database currentDeal){
-
-
                 //Populate the textviews with data
             city.setText(currentDeal.getCity());
             amt.setText(String.format("GHC %s", currentDeal.getAmount()));

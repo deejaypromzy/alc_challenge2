@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private String role = "";
 
     long lastPress;
-    private SharedPreferences sharedpreferences;
+    private SharedPreferences pref;
 
 
     void isAdmin(FirebaseUser user) {
@@ -66,10 +66,12 @@ public class MainActivity extends AppCompatActivity {
                     role = userDetails.getRole();
                     if (role.equals("1")) {
                         showFloatingActionButton(fab);
-                        SharedPreferences.Editor editor = sharedpreferences.edit();
-                        editor.putString("role", role);
-                        editor.apply();
+
+                    } else {
+                        hideFloatingActionButton(fab);
                     }
+
+                    Toast.makeText(MainActivity.this, role, Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
@@ -243,9 +245,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setupFirebaseAuth();
-        sharedpreferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
         mProgress = findViewById(R.id.progressBar);
-
+        pref = getApplicationContext().getSharedPreferences("MyPref", 0);
         final RecyclerView mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         //Initialize the ArrayList that will contain the data

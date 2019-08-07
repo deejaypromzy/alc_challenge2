@@ -1,6 +1,7 @@
 package com.dj.travelmantics;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 /**
  * A login screen that offers login via email/password.
@@ -46,8 +54,9 @@ public class Login extends AppCompatActivity{
     private GoogleSignInClient mGoogleSignInClient;
 
     private static final int RC_SIGN_IN = 9071;
-
-
+    private String userType;
+    private SharedPreferences pref;
+    private DatabaseReference mref;
 
 
     @Override
@@ -60,6 +69,10 @@ public class Login extends AppCompatActivity{
                 .requestEmail()
                 .build();
         // [END config_signin]
+
+        mref = FirebaseDatabase.getInstance().getReference();
+
+        pref = getApplicationContext().getSharedPreferences("MyPref", 0);
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
@@ -106,8 +119,16 @@ public class Login extends AppCompatActivity{
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-
-                            hideProgressDialog();
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                updateUI(user);
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Toast.makeText(Login.this, "Login failed.",
+                                        Toast.LENGTH_SHORT).show();
+                                updateUI_google_signin(null);
+                            }
 
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -223,8 +244,15 @@ public class Login extends AppCompatActivity{
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseAuth.getInstance().addAuthStateListener(mAuthListener);
-
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            if (pref.getString("userType", null) != null) {
+                Intent intent = new Intent(Login.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }
+        }
     }
     @Override
     public void onStop() {
@@ -329,13 +357,13 @@ if (emailChk())
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            updateUI_google_signin(user);
                             hideProgressDialog();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             //Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-                            updateUI(null);
+                            updateUI_google_signin(null);
                             hideProgressDialog();
                         }
 
@@ -344,15 +372,68 @@ if (emailChk())
                 });
     }
 // [END auth_with_google]
-    private void updateUI(FirebaseUser user) {
-        if (user != null) {
 
+
+    private void updateUI_google_signin(FirebaseUser user) {
+        if (user != null) {
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("userType", "gmail");
+            editor.apply();
             Intent intent = new Intent(Login.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
 
         }
+    }
+
+    private void updateUI(final FirebaseUser user) {
+        if (user != null) {
+            if (pref.getString("userType", null) != null &&
+                    !Objects.equals(pref.getString("userType", null), "gmail")) {
+
+                Intent intent = new Intent(Login.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            } else {
+                mref.child(FilePaths.travel_deals).child("users").child(user.getUid())
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                showData(dataSnapshot);
+
+
+                                Intent intent = new Intent(Login.this, MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                                finish();
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+            }
+
+
+        }
+
+    }
+
+    private void showData(DataSnapshot dataSnapshot) {
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            Database post = dataSnapshot.getValue(Database.class);
+            userType = Objects.requireNonNull(post).getRole();
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("userType", userType);
+            editor.apply();
+
+            Log.d("userType", userType);
+        }
+
     }
 }
 
