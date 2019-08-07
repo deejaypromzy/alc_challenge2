@@ -2,6 +2,7 @@ package com.dj.travelmantics;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private String role = "";
 
     long lastPress;
+    private SharedPreferences sharedpreferences;
 
 
     void isAdmin(FirebaseUser user) {
@@ -64,10 +66,12 @@ public class MainActivity extends AppCompatActivity {
                     role = userDetails.getRole();
                     if (role.equals("1")) {
                         showFloatingActionButton(fab);
+                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                        editor.putString("role", role);
+                        editor.apply();
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -239,8 +243,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setupFirebaseAuth();
-
-
+        sharedpreferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
         mProgress = findViewById(R.id.progressBar);
 
         final RecyclerView mRecyclerView = findViewById(R.id.recyclerView);
