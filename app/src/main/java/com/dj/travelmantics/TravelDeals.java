@@ -12,8 +12,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -84,6 +90,7 @@ class TravelDeals extends RecyclerView.Adapter<TravelDeals.DealsViewHolder>  {
         private FirebaseDatabase mfirebaseDatabase;
         private String userid;
         private String URL;
+        private String getrole = "";
 
         DealsViewHolder(final Context context, View itemView) {
             super(itemView);
@@ -100,8 +107,9 @@ class TravelDeals extends RecyclerView.Adapter<TravelDeals.DealsViewHolder>  {
             mref = mfirebaseDatabase.getReference();
             UserProductImageRef = FirebaseStorage.getInstance().getReference();
 
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-            if (mcurrentDeal.getRole().equals("1")) {
+            if (isAdmin(user).contains("admin")) {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -117,8 +125,38 @@ class TravelDeals extends RecyclerView.Adapter<TravelDeals.DealsViewHolder>  {
                     }
                 });
             }
+
         }
-     
+
+        String isAdmin(FirebaseUser user) {
+            Query userQuery = mref.child(FilePaths.travel_deals).child("users").child(user.getUid());
+
+            userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    //this loop will return a single result
+
+                    Database userDetails = dataSnapshot.getValue(Database.class);
+                    if ((userDetails != null ? userDetails.getRole() : null) != null) {
+
+                        String role = userDetails.getRole();
+                        if (role.equals("1")) {
+                            getrole = "admin";
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+            return getrole;
+        }
+
+
+
 
             void bindTo(Database currentDeal){
             //Populate the textviews with data
@@ -127,7 +165,8 @@ class TravelDeals extends RecyclerView.Adapter<TravelDeals.DealsViewHolder>  {
             place.setText(currentDeal.getPlace());
             desc.setText((currentDeal.getDesc()));
 
-            //Get the current sport
+
+                //Get the current sport
             mcurrentDeal = currentDeal;
 
             GlideApp.with(mContext)

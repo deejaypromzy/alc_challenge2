@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                     userDatabase != null ? userDatabase.getAmount() : null,
                     userDatabase != null ? userDatabase.getPlace() : null,
                     userDatabase != null ? userDatabase.getDesc() : null,
-                    userDatabase != null ? userDatabase.getPhoto_url() : null, role));
+                    userDatabase != null ? userDatabase.getPhoto_url() : null));
 
 
         }
