@@ -1,6 +1,9 @@
 package com.dj.travelmantics;
 
-class Database {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+class Database implements Parcelable {
     private String name;
     private String city;
     private String amount;
@@ -94,5 +97,15 @@ class Database {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
     }
 }

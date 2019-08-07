@@ -41,7 +41,6 @@ import java.util.Date;
 
 
 public class AddTravelDeals extends AppCompatActivity implements View.OnClickListener, ChangePhotoDialog.OnPhotoReceivedListener {
-    private static final int PERMS_REQUEST_CODE = 213123;
     private static final int REQUEST_CODE =112 ;
     private Button amtImage,save;
     private EditText city,desc,amt,place;
@@ -102,7 +101,7 @@ public class AddTravelDeals extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_travel_deals);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -130,7 +129,7 @@ public class AddTravelDeals extends AppCompatActivity implements View.OnClickLis
 
         private boolean validateForm() {
             if (proImage.getDrawable()== null) {
-                Toast.makeText(this, "Product Image Cant be empty", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Image Cant be empty", Toast.LENGTH_SHORT).show();
                 return true;
             }
 
@@ -327,7 +326,7 @@ String mydesc = desc.getText().toString();
 
 
                         FirebaseDatabase.getInstance().getReference()
-                                .child(FilePaths.travel_deals).child("deals").push()
+                                .child(FilePaths.travel_deals).child("deals").child(city.getText().toString())
                                 .setValue(dbUser);
 
                         hideProgressDialog();

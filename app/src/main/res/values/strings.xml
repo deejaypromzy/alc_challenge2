@@ -2,4 +2,11 @@
     <string name="app_name">Travel Mantics</string>
     <string name="action_settings">Settings</string>
     <string name="logout">Logout</string>
+    <string name="title_activity_edit__travel__deals">Edit_Travel_Deals</string>
+    <string name="select_image">Select Image</string>
+    <string name="city">City</string>
+    <string name="amount">Amount</string>
+    <string name="place">Place</string>
+    <string name="description">Description</string>
+    <string name="save">Save</string>
 </resources>

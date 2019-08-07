@@ -41,8 +41,7 @@
                         android:id="@+id/productImage"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
-                        android:background="@drawable/no_image"
-                        android:contentDescription="TODO" />
+                        android:background="@drawable/no_image" />
                 </RelativeLayout>
 
                 <Button
@@ -54,7 +53,7 @@
                     android:background="@drawable/btn_login_bg"
                     android:drawableStart="@drawable/photo"
                     android:padding="@dimen/fab_margin"
-                    android:text=" Select Image"
+                    android:text="@string/select_image"
                     android:textColor="@android:color/white" />
 
                 <android.support.design.widget.TextInputLayout
@@ -66,7 +65,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawablePadding="10dp"
-                        android:hint="City"
+                        android:hint="@string/city"
                         android:inputType="textCapSentences"
                         android:maxLines="1"
                         android:singleLine="true" />
@@ -81,7 +80,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawablePadding="10dp"
-                        android:hint="Amount"
+                        android:hint="@string/amount"
                         android:inputType="number"
                         android:maxLines="1"
                         android:singleLine="true" />
@@ -96,8 +95,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawablePadding="10dp"
-                        android:hint="Place"
-                        android:inputType="textCapSentences|textPersonName"
+                        android:hint="@string/place"
+                        android:inputType="textCapSentences"
                         android:maxLines="1"
                         android:singleLine="true" />
                 </android.support.design.widget.TextInputLayout>
@@ -111,23 +110,46 @@
                         android:layout_width="match_parent"
                         android:layout_height="70dp"
                         android:drawablePadding="10dp"
-                        android:hint="Descriptiion"
-                        android:inputType="textCapSentences|textPersonName"
+                        android:hint="@string/description"
+                        android:inputType="textCapSentences"
                         android:maxLines="10" />
                 </android.support.design.widget.TextInputLayout>
 
-                <Button
-                    android:id="@+id/publish"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/btn_login_bg"
-                    android:drawableStart="@drawable/ic_outline_save_24pxb"
-                    android:padding="@dimen/fab_margin"
-                    android:text=" Save"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp" />
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/delete"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_login_bg"
+                        android:drawableStart="@drawable/ic_delete_forever_black_24dp"
+                        android:padding="@dimen/fab_margin"
+                        android:text="Delete"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp" />
+
+                    <Button
+                        android:id="@+id/publish"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_update"
+                        android:drawableStart="@drawable/ic_outline_save_24pxb"
+                        android:padding="@dimen/fab_margin"
+                        android:text="Update"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
             </LinearLayout>
         </ScrollView>
     </android.support.v7.widget.CardView>
