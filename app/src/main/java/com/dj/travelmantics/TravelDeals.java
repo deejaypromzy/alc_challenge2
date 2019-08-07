@@ -101,20 +101,22 @@ class TravelDeals extends RecyclerView.Adapter<TravelDeals.DealsViewHolder>  {
             UserProductImageRef = FirebaseStorage.getInstance().getReference();
 
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(mContext, Edit_Travel_Deals.class);
-                    intent.putExtra("city", mcurrentDeal.getCity());
-                    intent.putExtra("amt", mcurrentDeal.getAmount());
-                    intent.putExtra("place", mcurrentDeal.getPlace());
-                    intent.putExtra("desc", mcurrentDeal.getDesc());
-                    intent.putExtra("photoUrl", mcurrentDeal.getPhoto_url());
-                    mContext.startActivity(intent);
+            if (mcurrentDeal.getRole().equals("1")) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext, Edit_Travel_Deals.class);
+                        intent.putExtra("city", mcurrentDeal.getCity());
+                        intent.putExtra("amt", mcurrentDeal.getAmount());
+                        intent.putExtra("place", mcurrentDeal.getPlace());
+                        intent.putExtra("desc", mcurrentDeal.getDesc());
+                        intent.putExtra("photoUrl", mcurrentDeal.getPhoto_url());
+                        mContext.startActivity(intent);
 
 
-                }
-            });
+                    }
+                });
+            }
         }
      
 

@@ -73,12 +73,22 @@ class Database implements Parcelable {
         this.photo_url = photo_url;
     }
 
+    public Database(String city, String amount, String place, String desc, String photo_url, String role) {
+        this.city = city;
+        this.amount = amount;
+        this.place = place;
+        this.desc = desc;
+        this.photo_url = photo_url;
+        this.role = role;
+    }
+
     public Database(String city, String amount, String place, String desc, String photo_url) {
         this.city = city;
         this.amount = amount;
         this.place = place;
         this.desc = desc;
         this.photo_url = photo_url;
+
     }
 
     public Database(String _id) {
